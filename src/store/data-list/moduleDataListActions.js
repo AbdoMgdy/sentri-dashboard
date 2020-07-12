@@ -1,7 +1,3 @@
-/*=========================================================================================
-  File Name: moduleCalendarActions.js
-  Description: Calendar Module Actions
-==========================================================================================*/
 
 import axios from "@/axios.js";
 import router from "../../router";
@@ -13,15 +9,17 @@ export default {
   fetchDataListItems({ commit }) {
     return new Promise((resolve, reject) => {
       axios
-        .get("orders")
+        .get("vendor")
         .then(response => {
+          console.log(response);
           if (response.status != 200) {
             // fix error when flask jwt token gives error 422
             router.push("/login");
             return;
           }
 
-          commit("SET_PRODUCTS", response.data);
+          commit("SET_PRODUCTS", response.data.orders);
+          commit("SET_USERS", response.data.customers);
           resolve(response);
         })
         .catch(error => {
@@ -57,13 +55,11 @@ export default {
   // },
   updateItem({ commit }, item) {
     let bodyFormData = new FormData();
-    bodyFormData.set("order_number", item.number);
     bodyFormData.set("order_status", item.status);
     return new Promise((resolve, reject) => {
       axios({
-        method: "post",
-        url:
-          "https://cors-anywhere.herokuapp.com/https://rest-bot-dev.herokuapp.com/edit_order_status",
+        method: "put",
+        url: `https://cors-anywhere.herokuapp.com/https://rest-bot-dev.herokuapp.com/order/${item.number}`,
         data: bodyFormData,
         headers: {
           "Content-Type": "multipart/form-data"

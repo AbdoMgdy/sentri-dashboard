@@ -58,9 +58,7 @@ const router = new Router({
           path: "/dashboard/orders",
           name: "data-list-list-view",
           component: () =>
-            import(
-              "@/views/ui-elements/data-list/list-view/DataListListView.vue"
-            ),
+            import("@/views/ui-elements/orders/list-view/DataListListView.vue"),
           meta: {
             rule: "admin"
           }
@@ -69,6 +67,32 @@ const router = new Router({
           path: "/dashboard/settings",
           name: "settings",
           component: () => import("@/views/ui-elements/Settings.vue"),
+          meta: {
+            rule: "admin"
+          }
+        },
+        {
+          path: "/dashboard/catalog/",
+          redirect: "/dashboard/catalog/categories"
+        },
+        {
+          path: "/dashboard/catalog/categories",
+          name: "categories",
+          component: () =>
+            import(
+              "@/views/ui-elements/catalog/categories/list-view/DataListListView.vue"
+            ),
+          meta: {
+            rule: "admin"
+          }
+        },
+        {
+          path: "/dashboard/catalog/items",
+          name: "items",
+          component: () =>
+            import(
+              "@/views/ui-elements/catalog/items/list-view/DataListListView.vue"
+            ),
           meta: {
             rule: "admin"
           }

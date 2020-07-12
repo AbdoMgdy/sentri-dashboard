@@ -39,17 +39,62 @@
           </li>
         </ul>
       </vx-card>
+      <vx-card title="Working Hours" class="mt-5">
+        {{ openingHours }}
+        <vs-row>
+          <vs-col vs-w="4">
+            <span>Opening Hours: </span>
+            <time-picker
+              v-model="openingHours"
+              auto-scroll
+              close-on-complete
+            ></time-picker>
+          </vs-col>
+          <vs-col vs-w="4">
+            <span>Closing Hours: </span>
+            <time-picker
+              v-model="closingHours"
+              auto-scroll
+              close-on-complete
+            ></time-picker>
+          </vs-col>
+          <vs-col vs-w="4">
+            <vs-button
+              id="workingHoursBtn"
+              @click="setWorkingHours"
+              class="vs-con-loading__container ml-10"
+              :color="primary"
+              type="filled"
+              >Set Working Hours</vs-button
+            >
+          </vs-col>
+        </vs-row>
+      </vx-card>
     </div>
   </div>
 </template>
 
 <script>
+import timePicker from "vue2-timepicker";
+import "vue2-timepicker/dist/VueTimepicker.css";
 export default {
+  components: {
+    timePicker
+  },
   data: () => ({
     isConnected: false,
-    pages: []
+    pages: [],
+    openingHours: "",
+    closingHours: ""
   }),
   methods: {
+    checkWorkingHours() {
+      if (this.openingHours && this.openingHours) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     fillPages(pages) {
       console.log(pages);
       const pagesMapper = pages.filter(
@@ -64,8 +109,8 @@ export default {
     },
     fethConnectedPages() {
       const uid = this.$store.getters.AppActiveUser.uid;
-      const accessToken = this.$store.getters.AppActiveUser.accessToken;
-      const url = `https://graph.facebook.com/${uid}/accounts?fields=is_webhooks_subscribed,name,access_token,picture&access_token=${accessToken}`;
+      const pageAccessToken = this.$store.getters.AppActiveUser.pageAccessToken;
+      const url = `https://graph.facebook.com/${uid}/accounts?fields=is_webhooks_subscribed,name,access_token,picture&access_token=${pageAccessToken}`;
       this.$http
         .get(url)
         .then(res => {
@@ -85,7 +130,7 @@ export default {
         container: `#p${page.id}`,
         scale: 0.45
       });
-      this.$http.post("connect_page", { page, uid }).then(res => {
+      this.$http.post("vendor/fb_page", { page, uid }).then(res => {
         console.log(res);
         this.fethConnectedPages();
         this.$vs.loading.close(`#p${page.id}>.con-vs-loading`);
@@ -99,11 +144,46 @@ export default {
         container: `#p${page.id}`,
         scale: 0.45
       });
-      this.$http.post("disconnect_page", { page, uid }).then(res => {
-        console.log(res);
-        this.fethConnectedPages();
-        this.$vs.loading.close(`#p${page.id}>.con-vs-loading`);
+      this.$http
+        .delete("vendor/fb_page", { data: { page: page, uid: uid } })
+        .then(res => {
+          console.log(res);
+          this.fethConnectedPages();
+          this.$vs.loading.close(`#p${page.id}>.con-vs-loading`);
+        });
+    },
+    setWorkingHours() {
+      if (!this.checkWorkingHours()) {
+        this.$vs.notify({
+          title: "Error",
+          text: "Make Sure Working Hours aren't empty",
+          color: "danger"
+        });
+        return;
+      }
+      this.$vs.loading({
+        background: "primary",
+        color: "#fff",
+        container: "#workingHoursBtn",
+        scale: 0.45
       });
+      this.$http
+        .put("vendor", {
+          opening_hours: this.openingHours,
+          closing_hours: this.closingHours
+        })
+        .then(res => {
+          this.$vs.loading.close(`#workingHoursBtn>.con-vs-loading`);
+          console.log(res);
+          this;
+          if (res.status == 200) {
+            this.$vs.notify({
+              title: "Success",
+              text: "Working Hours Set",
+              color: "success"
+            });
+          }
+        });
     }
   },
   created() {

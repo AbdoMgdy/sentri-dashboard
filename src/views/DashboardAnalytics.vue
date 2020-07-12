@@ -206,15 +206,6 @@ export default {
     onToChange(selectedDates, dateStr) {
       this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
     },
-    async setupAnalytics() {
-      await this.$store.dispatch("dataList/fetchDataListItems");
-      await this.$store.dispatch("dataList/fetchUsers");
-      this.$vs.loading.close();
-    }
-  },
-  async created() {
-    this.$vs.loading();
-    await this.setupAnalytics();
   }
 };
 </script>

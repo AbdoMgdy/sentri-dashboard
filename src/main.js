@@ -23,8 +23,20 @@ Vue.prototype.$http = axios;
 // API Calls
 import "./http/requests";
 
-// Firebase
+// Firebase and Cloud Messaging
 import "@/firebase/firebaseConfig";
+import firebase from "firebase";
+Vue.prototype.$messaging = firebase.messaging();
+
+navigator.serviceWorker
+  .register("/firebase-messaging-sw.js")
+  .then(registration => {
+    console.log("SW Regiestered");
+    Vue.prototype.$messaging.useServiceWorker(registration);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 // mock
 import "./fake-db/index.js";
@@ -56,12 +68,12 @@ import store from "./store/store";
 
 //Vue SocketIO
 
-import VueSocketIOExt from "vue-socket.io-extended";
-import io from "socket.io-client";
+// import VueSocketIOExt from "vue-socket.io-extended";
+// import io from "socket.io-client";
 
-const socket = io("https://rest-bot-dev.herokuapp.com/");
+// const socket = io("https://rest-bot-dev.herokuapp.com/");
 
-Vue.use(VueSocketIOExt, socket, { store });
+// Vue.use(VueSocketIOExt, socket, { store });
 
 // i18n
 import i18n from "./i18n/i18n";

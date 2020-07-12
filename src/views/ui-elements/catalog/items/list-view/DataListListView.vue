@@ -1,6 +1,10 @@
 <!-- =========================================================================================
   File Name: DataListListView.vue
   Description: Data List - List View
+  ----------------------------------------------------------------------------------------
+  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+  Author: Pixinvent
+  Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
 
 <template>
@@ -9,22 +13,31 @@
       :isSidebarActive="addNewDataSidebar"
       @closeSidebar="toggleDataSidebar"
       :data="sidebarData"
+      :categories="categories"
     />
 
     <vs-table
       ref="table"
-      multiple
       v-model="selected"
-      pagination
       :max-items="itemsPerPage"
-      search
-      :data="products"
+      :data="items"
     >
       <div
         slot="header"
         class="flex flex-wrap-reverse items-center flex-grow justify-between"
       >
-        <vs-spacer />
+        <div
+          class="flex flex-wrap-reverse items-center data-list-btn-container"
+        >
+          <!-- ADD NEW -->
+          <div
+            class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-primary border border-solid border-primary"
+            @click="addNewData"
+          >
+            <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
+            <span class="ml-2 text-base text-primary">Add New</span>
+          </div>
+        </div>
 
         <!-- ITEMS PER PAGE -->
         <vs-dropdown
@@ -37,9 +50,9 @@
             <span class="mr-2"
               >{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} -
               {{
-                products.length - currentPage * itemsPerPage > 0
+                items.length - currentPage * itemsPerPage > 0
                   ? currentPage * itemsPerPage
-                  : products.length
+                  : items.length
               }}
               of {{ queriedItems }}</span
             >
@@ -47,31 +60,28 @@
           </div>
           <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
           <vs-dropdown-menu>
-            <vs-dropdown-item @click="itemsPerPage = 5">
-              <span>5 per View</span>
+            <vs-dropdown-item @click="itemsPerPage = 4">
+              <span>4</span>
             </vs-dropdown-item>
             <vs-dropdown-item @click="itemsPerPage = 10">
-              <span>10 per View</span>
+              <span>10</span>
             </vs-dropdown-item>
             <vs-dropdown-item @click="itemsPerPage = 15">
-              <span>15 per View</span>
+              <span>15</span>
             </vs-dropdown-item>
             <vs-dropdown-item @click="itemsPerPage = 20">
-              <span>20 per View</span>
+              <span>20</span>
             </vs-dropdown-item>
           </vs-dropdown-menu>
         </vs-dropdown>
       </div>
 
       <template slot="thead">
-        <vs-th sort-key="time">TIMESTAMP</vs-th>
-        <vs-th sort-key="number">NUMBER</vs-th>
-        <vs-th sort-key="user.name">NAME</vs-th>
-        <vs-th sort-key="phone_number">PHONE</vs-th>
-        <vs-th sort-key="address">ADDRESS</vs-th>
-        <vs-th sort-key="items">ORDER</vs-th>
-        <vs-th sort-key="status">STATUS</vs-th>
-        <vs-th sort-key="price">PRICE</vs-th>
+        <vs-th sort-key="name">Title</vs-th>
+        <vs-th sort-key="price">Subtitle</vs-th>
+        <vs-th sort-key="price">Category</vs-th>
+        <vs-th sort-key="category">Price</vs-th>
+        <vs-th sort-key="category">Image</vs-th>
         <vs-th>Action</vs-th>
       </template>
 
@@ -79,59 +89,36 @@
         <tbody>
           <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
             <vs-td>
-              <p class="product-phone">
-                {{ tr.time.getDate() }}-{{ tr.time.getMonth() + 1 }}-{{
-                  tr.time.getFullYear()
-                }}
-                T {{ tr.time.getHours() }}:{{ tr.time.getMinutes() }}
-              </p>
+              <p class="product-name font-medium truncate">{{ tr.title }}</p>
             </vs-td>
             <vs-td>
-              <p class="product-phone">{{ tr.number }}</p>
+              <p class="product-name font-medium truncate">{{ tr.subtitle }}</p>
             </vs-td>
-
             <vs-td>
               <p class="product-name font-medium truncate">
-                {{ tr.customer.name }}
+                {{ tr.category_title }}
               </p>
             </vs-td>
-
             <vs-td>
-              <p class="product-phone">{{ tr.customer.phone_number }}</p>
+              <p class="product-name font-medium truncate">{{ tr.price }}</p>
             </vs-td>
-
             <vs-td>
-              <p class="product-address">{{ tr.customer.address }}</p>
-            </vs-td>
-
-            <vs-td>
-              <p class="product-order">{{ tr.items }}</p>
-            </vs-td>
-
-            <vs-td>
-              <vs-chip
-                :color="getOrderStatusColor(tr.status)"
-                class="product-order-status"
-                >{{ tr.status }}</vs-chip
-              >
-            </vs-td>
-
-            <vs-td>
-              <p class="product-price">L.E {{ tr.price }}</p>
+              <p class="product-name font-medium truncate">
+                <img :src="tr.img" alt="img" class="responsive w-12 h-12" />
+              </p>
             </vs-td>
 
             <vs-td class="whitespace-no-wrap">
               <feather-icon
                 icon="EditIcon"
-                svgClasses="w-5 h-5 hover:text-primary stroke-current"
+                svgClasses="w-5 h-5 hover:text-primary stroke-current mx-2"
                 @click.stop="editData(tr)"
               />
-              <!-- <feather-icon
+              <feather-icon
                 icon="TrashIcon"
-                svgClasses="w-5 h-5 hover:text-danger stroke-current"
-                class="ml-2"
-                @click.stop="deleteData(tr.id)"
-              /> -->
+                svgClasses="w-5 h-5 hover:text-primary stroke-current mx-2"
+                @click.stop="deleteData(tr)"
+              />
             </vs-td>
           </vs-tr>
         </tbody>
@@ -142,7 +129,7 @@
 
 <script>
 import DataViewSidebar from "../DataViewSidebar.vue";
-// import moduleDataList from "../../../../store/data-list/moduleDataList";
+
 
 export default {
   components: {
@@ -150,15 +137,9 @@ export default {
   },
   data() {
     return {
-      status: [
-        { name: "Pending" },
-        { name: "Out" },
-        { name: "Canceled" },
-        { name: "Delivered" }
-      ],
       selected: [],
-      // products: [],
-      itemsPerPage: 5,
+      // items: [],
+      itemsPerPage: 4,
       isMounted: false,
 
       // Data Sidebar
@@ -169,27 +150,22 @@ export default {
   computed: {
     currentPage() {
       if (this.isMounted) {
-        this.$vs.loading.close();
         return this.$refs.table.currentx;
       }
       return 0;
     },
-    products() {
-      return this.$store.state.dataList.products;
+    categories() {
+      return Object.entries(this.$store.state.catalog.categories).map(
+        el => el[1]
+      );
+    },
+    items() {
+      return this.$store.state.catalog.items;
     },
     queriedItems() {
       return this.$refs.table
         ? this.$refs.table.queriedResults.length
-        : this.products.length;
-    }
-  },
-  sockets: {
-    connect() {
-      console.log("Dtlst Socket connected");
-    },
-    order(data) {
-      const order = JSON.parse(data);
-      this.$store.dispatch("dataList/addItem", order[0]);
+        : this.items.length;
     }
   },
   methods: {
@@ -198,7 +174,8 @@ export default {
       this.toggleDataSidebar(true);
     },
     deleteData(id) {
-      this.$store.dispatch("dataList/removeItem", id).catch(err => {
+      console.log("deleteData 0");
+      this.$store.dispatch("catalog/removeItem", id).catch(err => {
         console.error(err);
       });
     },
@@ -206,26 +183,13 @@ export default {
       // this.sidebarData = JSON.parse(JSON.stringify(this.blankData))
       this.sidebarData = data;
       this.toggleDataSidebar(true);
-      console.log(this.products);
-    },
-    getOrderStatusColor(status) {
-      if (status == "Out") return "warning";
-      if (status == "Delivered") return "success";
-      if (status == "Canceled") return "danger";
-      return "primary";
     },
     toggleDataSidebar(val = false) {
       this.addNewDataSidebar = val;
-    },
-    async setupDataList() {
-      await this.$store.dispatch("auth/setBearerToken");
-      await this.$store.dispatch("dataList/fetchDataListItems");
-      this.$vs.loading.close();
     }
   },
-  async created() {
-    this.$vs.loading();
-    await this.setupDataList();
+  mounted() {
+    this.isMounted = true;
   }
 };
 </script>

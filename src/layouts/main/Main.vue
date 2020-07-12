@@ -90,6 +90,8 @@ import TheNavbarVertical from "@/layouts/components/navbar/TheNavbarVertical.vue
 import TheFooter from "@/layouts/components/TheFooter.vue";
 import themeConfig from "@/../themeConfig.js";
 import VNavMenu from "@/layouts/components/vertical-nav-menu/VerticalNavMenu.vue";
+// import messagingService from "@/firebase/messaging-service";
+import axios from "../../http/axios/index";
 
 export default {
   components: {
@@ -178,11 +180,6 @@ export default {
   },
 
   methods: {
-    joinRoom() {
-      this.$socket.client.emit("join", {
-        uid: this.activeUserInfo.uid
-      });
-    },
     changeRouteTitle(title) {
       this.routeTitle = title;
     },
@@ -214,9 +211,28 @@ export default {
       this.hideScrollToTop = val;
     },
     async setupMain() {
-      await this.joinRoom();
-      await this.$store.dispatch("auth/setBearerToken");
+      this.$store.dispatch("auth/setBearerToken");
+      await this.$store.dispatch("dataList/fetchDataListItems");
+      await this.$store.dispatch("catalog/fetchCategories");
+      await this.$store.dispatch("catalog/fetchItems");
       this.$vs.loading.close();
+    },
+    async setupFCM() {
+      console.log(this.$messaging);
+      this.$messaging
+        .requestPermission()
+        .then(() => {
+          console.log("Permission Granted");
+          return this.$messaging.getToken();
+        })
+        .then(token => {
+          console.log(token);
+          axios.put("vendor", { fcm_token: token });
+          this.$vs.loading.close();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   async created() {
@@ -228,6 +244,7 @@ export default {
     this.updateNavbarColor(color);
     this.setNavMenuVisibility(this.$store.state.mainLayoutType);
     await this.setupMain();
+    await this.setupFCM();
   }
 };
 </script>

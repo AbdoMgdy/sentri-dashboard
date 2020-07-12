@@ -42,7 +42,7 @@
                   :class="[`text-${ntf.category}`]"
                   >{{ ntf.title }}</span
                 >
-                <small>{{ ntf.msg }} {{ $socket.connected }}</small>
+                <small>{{ ntf.msg }}</small>
               </div>
             </div>
             <!-- <small class="mt-1 whitespace-no-wrap">{{
@@ -87,22 +87,28 @@ export default {
   },
   data() {
     return {
+      unreadNotifications: [],
       noOfRepetitions: 5,
       ntfSound: new Audio(
         "https://cdn.jsdelivr.net/npm/ion-sound@3.0.7/sounds/bell_ring.mp3"
       ),
-      unreadNotifications: [],
+
       settings: {
         maxScrollbarLength: 60,
         wheelSpeed: 0.6
       }
     };
   },
-  sockets: {
-    connect() {
-      console.log("Ntf Socket Connected");
-    },
-    order(data) {
+  created() {
+    //Add callback for receiving FCM
+    this.$messaging.onMessage(payload => {
+      this.orderRecieved(payload);
+      this.$store.dispatch("dataList/fetchDataListItems");
+      console.log(this.unreadNotifications);
+    });
+  },
+  methods: {
+    orderRecieved(data) {
       console.log(data);
       let vm = this;
       let timer = setInterval(function() {
@@ -126,9 +132,9 @@ export default {
         time: new Date(),
         category: "primary"
       });
-    }
-  },
-  methods: {
+      console.log(this.unreadNotifications);
+    },
+
     elapsedTime(startTime) {
       let x = new Date(startTime);
       let now = new Date();

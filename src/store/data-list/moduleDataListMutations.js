@@ -1,8 +1,3 @@
-/*=========================================================================================
-  File Name: moduleCalendarMutations.js
-  Description: Calendar Module Mutations
-
-==========================================================================================*/
 
 export default {
   ADD_ITEM(state, item) {
@@ -11,14 +6,19 @@ export default {
   },
   SET_PRODUCTS(state, products) {
     const productsMap = products.map(el => {
-      el.time = new Date(el.time);
+      let current = new Date(el.time);
+      el.time = new Date(current);
+      el.time.setHours(current.getHours() + 2);
       return el;
     });
-    state.products = productsMap;
+    state.products = productsMap.filter(el => el.is_confirmed == true);
+    state.products.sort((a, b) => b.time - a.time);
   },
   SET_USERS(state, users) {
     const usersMap = users.map(el => {
-      el.created_time = new Date(el.created_time);
+      let current = new Date(el.created_time);
+      el.created_time = new Date(current);
+      el.created_time.setHours(current.getHours() + 2);
       return el;
     });
     state.users = usersMap;

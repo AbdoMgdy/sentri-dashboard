@@ -9,6 +9,7 @@ import store from "../../store/store";
 import router from "@/router";
 import firebase from "firebase/app";
 import axios from "@/http/axios/index";
+
 export default {
   loginAttempt({ dispatch }, payload) {
     // New payload for login action
@@ -156,7 +157,7 @@ export default {
   },
 
   // Facebook Login
-  loginWithFacebook({ commit, state }, payload) {
+  loginWithFacebook({ commit }, payload) {
     // if (state.isUserLoggedIn()) {
     //   payload.notify({
     //     title: "Login Attempt",
@@ -177,19 +178,22 @@ export default {
       .signInWithPopup(provider)
       .then(res => {
         let payload = res.user.providerData[0];
-        payload["accessToken"] = res.credential.accessToken;
+        payload["pageAccessToken"] = res.credential.accessToken;
         console.log(res);
-        return axios.post("register", payload);
+        this._vm.$vs.loading();
+        return axios.post("vendor", payload);
       })
       .then(res => {
+        this._vm.$vs.loading.close();
         console.log(res.data);
         let payload = res.data.data;
         payload["JWTToken"] = res.data.jwt_token;
         store.dispatch("loginUser");
-        commit("UPDATE_USER_INFO", res.data, { root: true });
+        commit("UPDATE_USER_INFO", payload, { root: true });
         router.push(router.currentRoute.query.to || "/");
       })
       .catch(err => {
+        console.log(err);
         payload.notify({
           time: 2500,
           title: "Error",
@@ -333,7 +337,7 @@ export default {
   },
 
   setBearerToken({ commit }) {
-    commit("SET_BEARER", store.getters.AppActiveUser.data.JWTToken);
+    commit("SET_BEARER", store.getters.AppActiveUser.JWTToken);
   },
   // JWT
   loginJWT({ commit }, payload) {

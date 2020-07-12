@@ -34,5 +34,26 @@ export default [
     i18n: "Settings",
     icon: "SettingsIcon",
     slug: "Settings"
+  },
+  {
+    url: "/dashboard/catalog",
+    name: "Catalog",
+    i18n: "Catalog",
+    icon: "ShoppingCartIcon",
+    slug: "Catalog",
+    submenu: [
+      {
+        url: "/dashboard/catalog/categories",
+        name: "Categories",
+        icon: "ListIcon",
+        slug: "Categories"
+      },
+      {
+        url: "/dashboard/catalog/items",
+        name: "Items",
+        icon: "BoxIcon",
+        slug: "Items"
+      }
+    ]
   }
 ];
