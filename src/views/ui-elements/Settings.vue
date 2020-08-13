@@ -23,7 +23,7 @@
                   v-if="page.is_webhooks_subscribed"
                   color="danger"
                   type="filled"
-                  >Diconnect</vs-button
+                  >Disconnect</vs-button
                 >
                 <vs-button
                   :id="`p${page.id}`"
