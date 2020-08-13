@@ -96,6 +96,17 @@ const router = new Router({
           meta: {
             rule: "admin"
           }
+        },
+        {
+          path: "/dashboard/catalog/knowledge-base",
+          name: "knowledgeBase",
+          component: () =>
+            import(
+              "@/views/ui-elements/catalog/KnowledgeBase/KnowledgeBase.vue"
+            ),
+          meta: {
+            rule: "admin"
+          }
         }
       ]
     },

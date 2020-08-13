@@ -53,6 +53,12 @@ export default [
         name: "Items",
         icon: "BoxIcon",
         slug: "Items"
+      },
+      {
+        url: "/dashboard/catalog/knowledge-base",
+        name: "Knowledge Base",
+        icon: "ArchiveIcon",
+        slug: "knowlegeBase"
       }
     ]
   }
