@@ -228,7 +228,6 @@ export default {
         !this.errors.any() &&
         this.dataSubtitle &&
         this.dataTitle &&
-        this.dataCategory &&
         this.dataPrice > 0
       );
     }
@@ -242,21 +241,25 @@ export default {
       this.dataCategory = null;
       this.dataPrice = 0;
       this.dataImg = null;
+      this.dataInStock = true;
     },
     submitData() {
-      console.log("data submitted");
       this.$validator.validateAll().then(result => {
         if (result) {
           const obj = {
             id: this.dataId,
             title: this.dataTitle,
             subtitle: this.dataSubtitle,
-            img: this.dataImg,
+            img: this.dataImgUrl,
             category: this.dataCategory,
+            category_id: this.dataCategory,
+            category_title: this.$store.state.catalog.categories[
+              this.dataCategory
+            ].title,
             in_stock: this.dataInStock,
             price: this.dataPrice
           };
-
+          console.log(this.$props.categories);
           if (this.dataId !== null && this.dataId >= 0) {
             this.$store.dispatch("catalog/editItem", obj).catch(err => {
               console.error(err);

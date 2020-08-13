@@ -232,6 +232,7 @@ export default {
         })
         .catch(err => {
           console.log(err);
+          this.$vs.loading.close();
         });
     }
   },

@@ -175,7 +175,12 @@ export default {
       }
     },
     isFormValid() {
-      return !this.errors.any() && this.dataTitle && this.dataSubtitle;
+      return (
+        !this.errors.any() &&
+        this.dataTitle &&
+        this.dataSubtitle &&
+        this.dataImg !== ""
+      );
     }
   },
   methods: {

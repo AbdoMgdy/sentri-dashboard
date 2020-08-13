@@ -24,21 +24,21 @@ export default [
   {
     url: "/dashboard/analytics",
     name: "Analytics",
-    i18n: "Analytics",
+
     icon: "ActivityIcon",
     slug: "Analytics"
   },
   {
     url: "/dashboard/settings",
     name: "Settings",
-    i18n: "Settings",
+
     icon: "SettingsIcon",
     slug: "Settings"
   },
   {
     url: "/dashboard/catalog",
     name: "Catalog",
-    i18n: "Catalog",
+
     icon: "ShoppingCartIcon",
     slug: "Catalog",
     submenu: [

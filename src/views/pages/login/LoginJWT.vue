@@ -102,6 +102,7 @@ export default {
             color: "danger"
           });
         });
+      this.$vs.loading.close();
     },
     registerUser() {
       if (!this.checkLogin()) return;

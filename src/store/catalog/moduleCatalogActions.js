@@ -5,7 +5,6 @@ export default {
       axios
         .get("/catalog/categories")
         .then(response => {
-          console.log(response);
           commit("SET_CATEGORIES", response.data);
           resolve(response);
         })
@@ -19,7 +18,6 @@ export default {
       axios
         .get("/catalog/items")
         .then(response => {
-          console.log(response);
           commit("SET_ITEMS", response.data);
           resolve(response);
         })
@@ -29,14 +27,11 @@ export default {
     });
   },
   addCategory({ commit }, category) {
-    console.log("addCategory called");
-    console.trace();
+    commit("ADD_CATEGORY", category);
     return new Promise((resolve, reject) => {
       axios
         .post("/catalog/categories", category)
         .then(response => {
-          console.log(response);
-          commit("ADD_CATEGORY", category);
           resolve(response);
         })
         .catch(error => {
@@ -45,13 +40,11 @@ export default {
     });
   },
   editCategory({ commit }, category) {
-    console.log("editCategory called");
+    commit("EDIT_CATEGORY", category);
     return new Promise((resolve, reject) => {
       axios
         .put("/catalog/categories", category)
         .then(response => {
-          console.log(response);
-          commit("EDIT_CATEGORY", category);
           resolve(response);
         })
         .catch(error => {
@@ -60,13 +53,11 @@ export default {
     });
   },
   removeCategory({ commit }, category) {
-    console.log("removeCategory called");
-
+    commit("REMOVE_CATEGORY", category);
     return new Promise((resolve, reject) => {
       axios
         .delete("/catalog/categories", { data: category })
         .then(response => {
-          commit("REMOVE_CATEGORY", category);
           resolve(response);
         })
         .catch(error => {
@@ -75,12 +66,11 @@ export default {
     });
   },
   addItem({ commit }, item) {
-    console.log("addItem called");
+    commit("ADD_ITEM", item);
     return new Promise((resolve, reject) => {
       axios
         .post("/catalog/items", item)
         .then(response => {
-          commit("ADD_ITEM", item);
           resolve(response);
         })
         .catch(error => {
@@ -89,12 +79,11 @@ export default {
     });
   },
   editItem({ commit }, item) {
-    console.log("editItem called");
+    commit("EDIT_ITEM", item);
     return new Promise((resolve, reject) => {
       axios
         .put("/catalog/items", item)
         .then(response => {
-          commit("EDIT_ITEM", item);
           resolve(response);
         })
         .catch(error => {
@@ -103,11 +92,11 @@ export default {
     });
   },
   removeItem({ commit }, item) {
+    commit("REMOVE_ITEM", item);
     return new Promise((resolve, reject) => {
       axios
         .delete("/catalog/items", { data: item })
         .then(response => {
-          commit("REMOVE_ITEM", item);
           resolve(response);
         })
         .catch(error => {

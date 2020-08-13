@@ -113,6 +113,7 @@
         </tbody>
       </template>
     </vs-table>
+    <!-- <div>{{ categories() }}</div> -->
   </div>
 </template>
 
@@ -127,7 +128,6 @@ export default {
   data() {
     return {
       selected: [],
-      // categories: [],
       itemsPerPage: 4,
       isMounted: false,
 
@@ -158,8 +158,6 @@ export default {
       this.toggleDataSidebar(true);
     },
     deleteData(category) {
-      console.log("deleteData 0");
-      console.log(category);
       this.$store.dispatch("catalog/removeCategory", category).catch(err => {
         console.error(err);
       });

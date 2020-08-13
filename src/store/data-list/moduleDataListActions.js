@@ -1,4 +1,3 @@
-
 import axios from "@/axios.js";
 import router from "../../router";
 
@@ -33,7 +32,6 @@ export default {
       axios
         .get("customers")
         .then(response => {
-          console.log(response.data);
           commit("SET_USERS", response.data.customers);
           resolve(response);
         })
@@ -43,17 +41,8 @@ export default {
         });
     });
   },
-  // fetchEventLabels({ commit }) {
-  //   return new Promise((resolve, reject) => {
-  //     axios.get("/api/apps/calendar/labels")
-  //       .then((response) => {
-  //         commit('SET_LABELS', response.data)
-  //         resolve(response)
-  //       })
-  //       .catch((error) => { reject(error) })
-  //   })
-  // },
   updateItem({ commit }, item) {
+    commit("UPDATE_PRODUCT", item);
     let bodyFormData = new FormData();
     bodyFormData.set("order_status", item.status);
     return new Promise((resolve, reject) => {
@@ -66,7 +55,6 @@ export default {
         }
       })
         .then(response => {
-          commit("UPDATE_PRODUCT", item);
           resolve(response);
         })
         .catch(error => {
@@ -75,11 +63,11 @@ export default {
     });
   },
   removeItem({ commit }, itemId) {
+    commit("REMOVE_ITEM", itemId);
     return new Promise((resolve, reject) => {
       axios
         .delete(`/api/data-list/products/${itemId}`)
         .then(response => {
-          commit("REMOVE_ITEM", itemId);
           resolve(response);
         })
         .catch(error => {
@@ -87,20 +75,4 @@ export default {
         });
     });
   }
-  // eventDragged({ commit }, payload) {
-  //   return new Promise((resolve, reject) => {
-  //     axios.post(`/api/apps/calendar/event/dragged/${payload.event.id}`, {payload: payload})
-  //       .then((response) => {
-
-  //         // Convert Date String to Date Object
-  //         let event = response.data
-  //         event.startDate = new Date(event.startDate)
-  //         event.endDate = new Date(event.endDate)
-
-  //         commit('UPDATE_EVENT', event)
-  //         resolve(response)
-  //       })
-  //       .catch((error) => { reject(error) })
-  //   })
-  // },
 };

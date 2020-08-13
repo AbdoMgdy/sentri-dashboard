@@ -130,7 +130,6 @@
 <script>
 import DataViewSidebar from "../DataViewSidebar.vue";
 
-
 export default {
   components: {
     DataViewSidebar
@@ -174,7 +173,6 @@ export default {
       this.toggleDataSidebar(true);
     },
     deleteData(id) {
-      console.log("deleteData 0");
       this.$store.dispatch("catalog/removeItem", id).catch(err => {
         console.error(err);
       });
