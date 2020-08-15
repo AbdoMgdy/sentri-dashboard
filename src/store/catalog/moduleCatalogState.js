@@ -1,4 +1,5 @@
 export default {
   items: {},
-  categories: {}
+  categories: {},
+  knowledge: {}
 };

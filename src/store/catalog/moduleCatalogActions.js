@@ -26,6 +26,19 @@ export default {
         });
     });
   },
+  fetchKnowledge({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get("/catalog/knowledge")
+        .then(response => {
+          commit("SET_KNOWLEDGE", response.data);
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
   addCategory({ commit }, category) {
     commit("ADD_CATEGORY", category);
     return new Promise((resolve, reject) => {
@@ -96,6 +109,20 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .delete("/catalog/items", { data: item })
+        .then(response => {
+          resolve(response);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  editKnowledgeValue({ getters: knowledge }) {
+    // commit("EDIT_KNOWLEDGE", knowledge);
+    console.log(knowledge.knowledge);
+    return new Promise((resolve, reject) => {
+      axios
+        .put("/catalog/knowledge", knowledge.knowledge)
         .then(response => {
           resolve(response);
         })
