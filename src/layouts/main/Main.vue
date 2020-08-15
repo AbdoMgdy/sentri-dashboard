@@ -215,6 +215,7 @@ export default {
       await this.$store.dispatch("dataList/fetchDataListItems");
       await this.$store.dispatch("catalog/fetchCategories");
       await this.$store.dispatch("catalog/fetchItems");
+      await this.$store.dispatch("catalog/fetchKnowledge");
       this.$vs.loading.close();
     },
     async setupFCM() {
