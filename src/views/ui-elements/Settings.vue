@@ -63,7 +63,7 @@
               id="workingHoursBtn"
               @click="setWorkingHours"
               class="vs-con-loading__container ml-10"
-              :color="primary"
+              color="primary"
               type="filled"
               >Set Working Hours</vs-button
             >

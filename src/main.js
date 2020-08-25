@@ -1,10 +1,6 @@
 /*=========================================================================================
   File Name: main.js
-  Description: main vue(js) file
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
+  Description: Main Vue(js) file
 ==========================================================================================*/
 
 import Vue from "vue";
@@ -24,32 +20,12 @@ Vue.prototype.$http = axios;
 import "./http/requests";
 
 // Firebase and Cloud Messaging
-import "@/firebase/firebaseConfig";
-import firebase from "firebase";
+import firebase from "@/firebase/firebaseConfig";
 Vue.prototype.$messaging = firebase.messaging();
 
-navigator.serviceWorker
-  .register("/firebase-messaging-sw.js")
-  .then(registration => {
-    console.log("SW Regiestered");
-    Vue.prototype.$messaging.useServiceWorker(registration);
-  })
-  .catch(err => {
-    console.log(err);
-  });
-
-// mock
-import "./fake-db/index.js";
 
 // Theme Configurations
 import "../themeConfig.js";
-
-// Auth0 Plugin
-import AuthPlugin from "./plugins/auth";
-Vue.use(AuthPlugin);
-
-// ACL
-import acl from "./acl/acl";
 
 // Globally Registered Components
 import "./globalComponents.js";
@@ -74,9 +50,6 @@ import store from "./store/store";
 // const socket = io("https://rest-bot-dev.herokuapp.com/");
 
 // Vue.use(VueSocketIOExt, socket, { store });
-
-// i18n
-import i18n from "./i18n/i18n";
 
 // Vuexy Admin Filters
 import "./filters/filters";
@@ -119,7 +92,5 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  i18n,
-  acl,
   render: h => h(App)
 }).$mount("#app");

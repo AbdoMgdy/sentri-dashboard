@@ -99,12 +99,12 @@ export default {
       }
     };
   },
-  created() {
+  async created() {
     //Add callback for receiving FCM
     this.$messaging.onMessage(payload => {
+      console.log("Msg Received", payload);
       this.orderRecieved(payload);
       this.$store.dispatch("dataList/fetchDataListItems");
-      console.log(this.unreadNotifications);
     });
   },
   methods: {
@@ -116,7 +116,7 @@ export default {
       }, 3000);
       this.$vs.notify({
         title: "New Order Recieved",
-        text: "You got new order of goods.",
+        text: "You Have 1 New Order !.",
         icon: "notifications",
         position: "top-center",
         fixed: true,

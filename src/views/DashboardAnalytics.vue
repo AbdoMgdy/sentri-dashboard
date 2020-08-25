@@ -205,7 +205,7 @@ export default {
     },
     onToChange(selectedDates, dateStr) {
       this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
-    },
+    }
   }
 };
 </script>

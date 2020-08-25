@@ -219,17 +219,26 @@ export default {
       this.$vs.loading.close();
     },
     async setupFCM() {
-      console.log(this.$messaging);
-      this.$messaging
-        .requestPermission()
+      Notification.requestPermission()
         .then(() => {
           console.log("Permission Granted");
-          return this.$messaging.getToken();
-        })
-        .then(token => {
-          console.log(token);
-          axios.put("vendor", { fcm_token: token });
-          this.$vs.loading.close();
+          return navigator.serviceWorker
+            .register("/firebase-messaging-sw.js")
+            .then(registration => {
+              console.log("SW Regiestered");
+              console.log(registration);
+              const options = {
+                vapidKey:
+                  "BA792-7mK1IN2kvIvprEnvGzPYjFTV-jIB1sPrNCWo-S2dgX8HCJKpfH2L63UMOnn5dWKQPpWLslp2Gd76nzWRw",
+                serviceWorkerRegistration: registration
+              };
+              console.log(options);
+              return this.$messaging.getToken(options).then(token => {
+                console.log(token);
+                axios.put("vendor", { fcm_token: token });
+                this.$vs.loading.close();
+              });
+            });
         })
         .catch(err => {
           console.log(err);

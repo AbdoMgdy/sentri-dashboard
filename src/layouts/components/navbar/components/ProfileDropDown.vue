@@ -76,7 +76,6 @@ export default {
       }
 
       // Change role on logout. Same value as initialRole of acj.js
-      this.$acl.change("admin");
       this.$store.dispatch("logoutUser");
       localStorage.removeItem("userInfo");
 

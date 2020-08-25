@@ -170,7 +170,7 @@ export default {
     // }
     const provider = new firebase.auth.FacebookAuthProvider();
     provider.addScope(
-      "manage_pages, pages_messaging, pages_show_list, publish_pages, pages_messaging_subscriptions"
+      "pages_read_engagement, pages_messaging, pages_show_list, pages_messaging_subscriptions"
     );
 
     firebase

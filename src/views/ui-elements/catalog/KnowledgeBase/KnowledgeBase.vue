@@ -1,41 +1,43 @@
 <template lang="html">
   <div>
-    <vs-tabs v-if="knowledge.comments">
+    <vs-tabs>
       <vs-tab v-for="(v, k) in knowledge" :label="v.label" :key="k">
         <div class="con-tab-ejemplo">
-          <vs-table :data="v.values">
+          <vs-table :data="Object.entries(v.values)">
             <template slot="thead">
-              <vs-th class="bg-grey-light rounded-tl w-1/5"> Key</vs-th>
-              <vs-th class="bg-grey-light rounded-tr w-4/5"> Value</vs-th>
+              <vs-th class="bg-grey-light rounded-tl w-1/5">Key</vs-th>
+              <vs-th class="bg-grey-light rounded-tr w-4/5">Value</vs-th>
             </template>
 
             <template slot-scope="{ data }">
               <vs-tr :key="i" v-for="(value, i) in data">
-                <vs-td :data="value.key" class="break-words">
-                  {{ value.key }}
+                <vs-td :data="value" class="break-words">
+                  {{ value[0] }}
                 </vs-td>
 
-                <vs-td :data="value.value" class="break-words">
-                  {{ value.value }}
+                <vs-td :data="value" class="break-words">
+                  {{ value[1] }}
 
                   <template slot="edit">
-                    <vs-textarea
-                      class="inputx"
-                      width="50%"
-                      v-model="value.value"
-                    />
+                    <div class="flex flex-col items-center w-full">
+                      <vs-textarea
+                        class="inputx"
+                        width="57%"
+                        v-model="value[1]"
+                      />
+                      <vs-button
+                        color="success"
+                        type="filled"
+                        class="vs-con-loading__container"
+                        @click="editKnowledge(k, value[0], value[1])"
+                        >Save</vs-button
+                      >
+                    </div>
                   </template>
                 </vs-td>
               </vs-tr>
             </template>
           </vs-table>
-          <vs-button
-            color="success"
-            class="float-right mt-4"
-            type="filled"
-            @click="editKnowledge"
-            >Save</vs-button
-          >
         </div>
       </vs-tab>
     </vs-tabs>
@@ -51,11 +53,11 @@ export default {
     }
   },
   methods: {
-    editKnowledge() {
-      console.log(this.$store.getters["catalog/knowledge"].greetings);
+    editKnowledge(category, key, value) {
       let knowledgev = {
-        gretings: this.$store.getters["catalog/knowledge"].greetings,
-        comments: this.$store.getters["catalog/knowledge"].comments
+        category,
+        key,
+        value
       };
       console.log(knowledgev);
       this.$store
@@ -64,6 +66,9 @@ export default {
           console.log(err);
         });
     }
+  },
+  created() {
+    console.log(this.knowledge);
   }
 };
 </script>

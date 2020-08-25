@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/database";
 import "firebase/messaging";
-// import axios from "../http/axios/index";
+import "firebase/storage";
 
 // Initialize Firebase
 
@@ -17,8 +17,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
-messaging.usePublicVapidKey(
-  "BA792-7mK1IN2kvIvprEnvGzPYjFTV-jIB1sPrNCWo-S2dgX8HCJKpfH2L63UMOnn5dWKQPpWLslp2Gd76nzWRw"
-);
-
+messaging.onMessage(payload => {
+  console.log("Message received. ", payload);
+});
 export default firebase;

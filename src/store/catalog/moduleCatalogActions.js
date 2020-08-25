@@ -117,12 +117,12 @@ export default {
         });
     });
   },
-  editKnowledgeValue({ getters: knowledge }) {
+  editKnowledgeValue({ commit }, knowledgeValue) {
     // commit("EDIT_KNOWLEDGE", knowledge);
-    console.log(knowledge.knowledge);
+    console.log(knowledgeValue);
     return new Promise((resolve, reject) => {
       axios
-        .put("/catalog/knowledge", knowledge.knowledge)
+        .put("/catalog/knowledge_base", knowledgeValue)
         .then(response => {
           resolve(response);
         })

@@ -141,7 +141,10 @@
     </VuePerfectScrollbar>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="submitData" :disabled="!isFormValid"
+      <vs-button
+        class="mr-6"
+        @click="submitData"
+        :disabled="!isFormValid || !isImageUploaded"
         >Submit</vs-button
       >
       <vs-button
@@ -203,6 +206,7 @@ export default {
       dataImg: null,
       dataImgUrl: "",
       dataPrice: 0,
+      isImageUploaded: true,
       settings: {
         // perfectscrollbar settings
         maxScrollbarLength: 60,
@@ -235,9 +239,9 @@ export default {
   methods: {
     initValues() {
       if (this.data.id) return;
-      this.dataId = null;
+      this.dataId = Math.floor(Math.random() * Math.floor(9999)).toString();
       this.dataTitle = "";
-      this.dataSubtitle;
+      this.dataSubtitle = "";
       this.dataCategory = null;
       this.dataPrice = 0;
       this.dataImg = null;
@@ -247,7 +251,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           const obj = {
-            id: this.dataId,
+            id: this.dataId.toString(),
             title: this.dataTitle,
             subtitle: this.dataSubtitle,
             img: this.dataImgUrl,
@@ -260,17 +264,16 @@ export default {
             price: this.dataPrice
           };
           console.log(this.$props.categories);
-          if (this.dataId !== null && this.dataId >= 0) {
+          if (Object.entries(this.data).length !== 0) {
             this.$store.dispatch("catalog/editItem", obj).catch(err => {
               console.error(err);
             });
           } else {
-            delete obj.id;
             this.$store.dispatch("catalog/addItem", obj).catch(err => {
               console.error(err);
             });
           }
-
+          this.$store.dispatch("catalog/fetchItems");
           this.$emit("closeSidebar");
           this.initValues();
         }
@@ -282,6 +285,7 @@ export default {
         var reader = new FileReader();
         reader.onload = e => {
           this.dataImg = e.target.result;
+          this.isImageUploaded = false;
         };
         reader.readAsDataURL(input.target.files[0]);
         this.dataImgUrl = null;
@@ -301,6 +305,7 @@ export default {
           () => {
             this.uploadValue = 100;
             storageRef.snapshot.ref.getDownloadURL().then(url => {
+              this.isImageUploaded = true;
               this.dataImgUrl = url;
               console.log(url);
             });
