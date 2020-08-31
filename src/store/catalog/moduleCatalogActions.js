@@ -118,7 +118,7 @@ export default {
     });
   },
   editKnowledgeValue({ commit }, knowledgeValue) {
-    // commit("EDIT_KNOWLEDGE", knowledge);
+    commit("EDIT_KNOWLEDGE", knowledgeValue);
     console.log(knowledgeValue);
     return new Promise((resolve, reject) => {
       axios

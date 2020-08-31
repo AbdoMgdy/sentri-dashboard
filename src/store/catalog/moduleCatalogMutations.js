@@ -24,6 +24,13 @@ export default {
   SET_ITEMS(state, items) {
     state.items = items;
   },
+  EDIT_KNOWLEDGE(state, knowledgeValue) {
+    Vue.set(
+      state.knowledge[knowledgeValue.category]["values"],
+      knowledgeValue.key,
+      knowledgeValue.value
+    );
+  },
   SET_KNOWLEDGE(state, knowledge) {
     state.knowledge = knowledge;
   }
