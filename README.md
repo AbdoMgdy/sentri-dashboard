@@ -1,4 +1,7 @@
-# modern
+# Sentri Dashboard
+
+## Description
+A Dashbaord made in vue 
 
 ## Project setup
 ```
