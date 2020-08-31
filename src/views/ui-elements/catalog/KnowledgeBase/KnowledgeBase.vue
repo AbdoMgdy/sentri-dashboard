@@ -26,10 +26,11 @@
                         v-model="value[1]"
                       />
                       <vs-button
+                        :id="`save-${i}`"
                         color="success"
                         type="filled"
                         class="vs-con-loading__container"
-                        @click="editKnowledge(k, value[0], value[1])"
+                        @click="editKnowledge(k, value[0], value[1], i)"
                         >Save</vs-button
                       >
                     </div>
@@ -53,23 +54,30 @@ export default {
     }
   },
   methods: {
-    editKnowledge(category, key, value) {
+    editKnowledge(category, key, value, i) {
       let knowledgev = {
         category,
         key,
         value
       };
       console.log(knowledgev);
+      this.$vs.loading({
+        background: "#00e600",
+        color: "#fff",
+        container: `#save-${i}`,
+        scale: 0.45
+      });
       this.$store
         .dispatch("catalog/editKnowledgeValue", knowledgev)
+        .then(() => {
+          this.$vs.loading.close(`#save-${i}>.con-vs-loading`);
+        })
         .catch(err => {
           console.log(err);
         });
     }
   },
-  created() {
-    console.log(this.knowledge);
-  }
+  created() {}
 };
 </script>
 
