@@ -1,7 +1,7 @@
 # Sentri Dashboard
 
 ## Description
-A Dashbaord made in vue 
+A Dashbaord made in vue open the demo and link your facebook page in settings.
 
 ## Project setup
 ```
