@@ -98,8 +98,8 @@ const router = new Router({
           }
         },
         {
-          path: "/dashboard/catalog/knowledge-base",
-          name: "knowledgeBase",
+          path: "/dashboard/catalog/editor",
+          name: "Editor",
           component: () =>
             import(
               "@/views/ui-elements/catalog/KnowledgeBase/KnowledgeBase.vue"

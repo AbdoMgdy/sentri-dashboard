@@ -55,10 +55,10 @@ export default [
         slug: "Items"
       },
       {
-        url: "/dashboard/catalog/knowledge-base",
-        name: "Knowledge Base",
+        url: "/dashboard/catalog/editor",
+        name: "Editor",
         icon: "ArchiveIcon",
-        slug: "knowlegeBase"
+        slug: "editor"
       }
     ]
   }
