@@ -13,6 +13,7 @@ A Dashbaord made in vue.
  * VueJS
  * Vuex
  * Vue Router
+ * Tailwind
  * Vuesax
  * Firebase (Hosting, Login and Cloud Messaging)
 
