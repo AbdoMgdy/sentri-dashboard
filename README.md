@@ -4,6 +4,8 @@
 
 A Dashbaord made in vue.
 
+### Steps:
+
 - Login with facebook.
 - In Settings Connect a facebook page.
 - Then in Catalog add Categories and then add items that belong to a category 
