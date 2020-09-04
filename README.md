@@ -4,7 +4,7 @@
 
 A Dashbaord made in vue.
 
-### Steps:
+## How to Use:
 
 - Login with facebook.
 - In Settings Connect a facebook page.
