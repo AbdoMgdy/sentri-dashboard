@@ -210,7 +210,10 @@ export default {
               console.error(err);
             });
           }
-          this.$store.dispatch("catalog/fetchCategories");
+          setTimeout(
+            () => this.$store.dispatch("catalog/fetchCategories"),
+            2000
+          );
           this.$emit("closeSidebar");
           this.initValues();
         }

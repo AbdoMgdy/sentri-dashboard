@@ -273,7 +273,7 @@ export default {
               console.error(err);
             });
           }
-          this.$store.dispatch("catalog/fetchItems");
+          setTimeout(() => this.$store.dispatch("catalog/fetchItems"), 2000);
           this.$emit("closeSidebar");
           this.initValues();
         }
