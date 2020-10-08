@@ -1,31 +1,22 @@
 # Sentri Dashboard
 
 ## Description
-A Dashbaord made in vue open the demo and link your facebook page in settings.
-- Then in Catalog add Categories and then add items that belong to a catgory 
-- Then you can test it out by talkin to you facebook page.
 
-## Project setup
-```
-npm install
-```
+A Dashbaord made in vue.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Technologies
+ * VueJS
+ * Vuex
+ * Vue Router
+ * Tailwind
+ * Vuesax
+ * Firebase (Hosting, Login and Cloud Messaging)
 
-### Run your tests
-```
-npm run test
-```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## How to Use:
+
+- Login with facebook.
+- In Settings Connect a facebook page.
+- Then in Catalog add Categories and then add items that belong to a category 
+- Then you can test it out by sending a message to you facebook page.
